@@ -1,0 +1,19 @@
+# Dataset
+data/
+dataset/
+
+# Image files
+*.jpg
+*.jpeg
+*.png
+*.webp
+
+# Kaggle API Key
+kaggle.json
+
+# Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
