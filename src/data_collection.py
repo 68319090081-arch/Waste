@@ -5,7 +5,7 @@ import subprocess
 DATASET = DATASET = "phenomsg/waste-classification"
 
 # Folder สำหรับเก็บ Dataset
-OUTPUT_DIR = "data"
+OUTPUT_DIR = os.path.join(os.path.dirname(_file_), "..", "data")
 
 
 def download_dataset():
