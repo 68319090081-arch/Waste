@@ -2,7 +2,7 @@ import os
 import subprocess
 
 # Kaggle Dataset
-DATASET = "techsash/waste-classification-data"
+DATASET = DATASET = "phenomsg/waste-classification"
 
 # Folder สำหรับเก็บ Dataset
 OUTPUT_DIR = "data"
