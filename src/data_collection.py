@@ -2,10 +2,10 @@ import os
 import subprocess
 
 # Kaggle Dataset
-DATASET = DATASET = "phenomsg/waste-classification"
+DATASET = "phenomsg/waste-classification"
 
 # Folder สำหรับเก็บ Dataset
-OUTPUT_DIR = os.path.join(os.path.dirname(_file_), "..", "data")
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 def download_dataset():
