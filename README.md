@@ -1,24 +1,68 @@
-วิธีทดสอบ Data Collection
+Waste Classification
 
-1. เปิด Git Bash แล้ว Clone โปรเจกต์
+1.ชื่อโปรเจกต์
+โปรเจกต์ Waste Classification เป็นระบบสำหรับการจำแนกประเภทขยะ
+โดยใช้ Waste Classification Dataset จาก Kaggle
 
+2.ที่มาของ Dataset
+Dataset ที่ใช้: Waste Classification Dataset จาก PhenomSG
+
+Kaggle:
+https://www.kaggle.com/datasets/phenomsg/waste-classification
+
+Dataset ประกอบด้วยประเภทขยะหลัก ได้แก่
+- Hazardous
+- Non-Recyclable
+- Organic
+- Recyclable
+
+การตั้งค่า Kaggle API
+ผู้ใช้งานแต่ละคนต้องใช้ Kaggle Account ของตนเอง
+เพื่อยืนยันตัวตนก่อนดาวน์โหลด Dataset
+
+รันคำสั่ง
+kaggle auth login 
+จากนั้นทำตามขั้นตอนที่แสดงบนหน้าจอ
+
+วิธีติดตั้งและวิธีรัน Code
+ติดตั้งโปรเจกต์
 git clone https://github.com/68319090081-arch/Waste.git
 cd Waste
 
-2. เปลี่ยนไป Branch ของ Data Collection
-
-git checkout feature/data-collection
-
-3. ติดตั้ง Library
-
+ติดตั้ง Library
 pip install -r requirements.txt
 
-4. Login Kaggle
-
-kaggle auth login
-
-5. ดาวน์โหลด Dataset
-
+ดาวน์โหลด Dataset
 python src/data_collection.py
 
-Dataset จะถูกดาวน์โหลดอัตโนมัติลงในโฟลเดอร์ data/
+Dataset จะถูกดาวน์โหลดอัตโนมัติไปยังโฟลเดอร์ data/
+
+โครงสร้าง Repository
+Waste/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── src/
+│   └── data_collection.py
+├── data/
+├── notebooks/
+├── reports/
+└── slides/
+หมายเหตุ: โฟลเดอร์ data/ จะไม่ถูก Commit ขึ้น GitHub เนื่องจากกำหนดไว้ใน .gitignore
+
+5. สมาชิกและหน้าที่รับผิดชอบ
+คนที่ 1: นายอนุชิต เอี่ยมโมฬี
+หน้าที่: Data Collection
+Branch: feature/data-collection
+
+คนที่ 2: นายอนวัฒน์ เทพนาคิน
+หน้าที่: EDA
+Branch: feature/eda
+
+คนที่ 3: นายสุวิทย์ ชมวิจิตร
+หน้าที่: Preprocessing
+Branch: feature/preprocessing
+
+คนที่ 4: นายณัฐพล ผลเจริญ
+หน้าที่: Data Split
+Branch: feature/data-split
