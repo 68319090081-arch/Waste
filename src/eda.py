@@ -110,7 +110,7 @@ dup_count = sum(v - 1 for v in duplicates.values())
 
 # Create output folder for figures
 os.makedirs(os.path.join(PROJECT_ROOT, "figures"), exist_ok=True)
-FIGURES_DIR = os.path.join(PROJECT_ROOT, "figures")
+FIGURES_DIR = os.path.join(PROJECT_ROOT, "reports", "figures")
 
 # ══════════════════════════════════════════════════════════════
 # 📊 PART 1: Quantitative Analysis — Print to console
