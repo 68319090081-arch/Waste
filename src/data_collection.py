@@ -1,90 +1,94 @@
 import os
-from collections import Counter
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-from PIL import Image
-import warnings
-warnings.filterwarnings("ignore")
+import json
+from pathlib import Path
+import kaggle
+import sys
 
-# ====== ตั้งค่าฟอนต์ ======
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = ['Segoe UI', 'Tahoma', 'DejaVu Sans']
-plt.style.use('ggplot')
+# ==========================================================
+# 1. กำหนด Dataset จาก Kaggle
+# ==========================================================
+DATASET = "phenomsg/waste-classification"
 
-# ==================================================
-# ✅ ที่อยู่อัตโนมัติ — ใช้ได้กับทุกเครื่อง ไม่ต้องแก้อะไร!
-# ==================================================
+# ==========================================================
+# 2. หาตำแหน่ง Project อัตโนมัติ
+# ==========================================================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
-image_dir = os.path.join(PROJECT_ROOT, "data")
+DATA_DIR = os.path.join(PROJECT_ROOT, "data")
 
-# ตรวจสอบโฟลเดอร์
-if not os.path.exists(image_dir):
-    print("=" * 70)
-    print("❌ ERROR: หาโฟลเดอร์ข้อมูลไม่เจอ!")
-    print(f"👉 ค้นหาที่: {image_dir}")
-    print("💡 ตรวจสอบว่ามีโฟลเดอร์ data/ ไว้ข้างนอกโฟลเดอร์ src/")
-    print("=" * 70)
-    exit()
+# ==========================================================
+# 3. ตั้งค่า Kaggle อัตโนมัติ — ครั้งเดียว จดจำตลอดไป
+# ==========================================================
+def setup_kaggle():
+    kaggle_dir = Path.home() / ".kaggle"
+    json_path = kaggle_dir / "kaggle.json"
 
-print("=" * 70)
-print(f"✅ พบข้อมูลที่: {image_dir}")
-print("🔍 กำลังสแกนรูปภาพ... กรุณารอสักครู่...")
-print("=" * 70)
+    # ✅ ถ้ามีไฟล์อยู่แล้ว → ข้ามเลย ใช้ของเดิม
+    if json_path.exists():
+        print("✅ Kaggle already configured")
+        return True
 
-# ====== นามสกุลไฟล์ที่ยอมรับ ======
-image_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'}
+    # ❌ ถ้ายังไม่มี → ถามครั้งเดียว
+    print("=" * 60)
+    print("⚠️  Kaggle setup required (only once per computer)")
+    print("👉 Get your API key from: Kaggle.com → Settings → Create New API Token")
+    print("=" * 60)
+    
+    username = input("Enter Kaggle Username: ").strip()
+    api_key = input("Enter Kaggle API Key: ").strip()
 
-# ====== ตัวแปรเก็บข้อมูล ======
-main_categories = {}
-sub_categories = {}
-image_info = []
-corrupted_files = []
-grayscale_count = 0
-total_images = 0
+    if not username or not api_key:
+        print("❌ Error: Username or Key cannot be empty")
+        sys.exit(1)
 
-# ====== อ่านข้อมูลรูปภาพทุกรูป ======
-for root, dirs, files in os.walk(image_dir):
-    for filename in files:
-        ext = os.path.splitext(filename)[1].lower()
-        if ext not in image_extensions:
-            continue
+    # ✅ สร้างไฟล์ให้อัตโนมัติ
+    kaggle_dir.mkdir(exist_ok=True)
+    json_path.write_text(json.dumps({"username": username, "key": api_key}))
+    os.chmod(str(json_path), 0o600)
+    print("✅ Saved successfully! Ready to download.")
+    print("-" * 60)
+    return True
 
-        filepath = os.path.join(root, filename)
-        path_parts = os.path.relpath(root, image_dir).split(os.sep)
+# ==========================================================
+# 4. ดาวน์โหลด + แตกไฟล์ ถ้ายังไม่มี
+# ==========================================================
+def download_dataset():
+    os.makedirs(DATA_DIR, exist_ok=True)
 
-        main_cat = path_parts[0] if len(path_parts) >= 1 else "Unknown"
-        sub_cat = path_parts[1] if len(path_parts) >= 2 else ""
+    # ✅ ถ้ามีข้อมูลอยู่แล้ว → ข้าม
+    if len(os.listdir(DATA_DIR)) > 0:
+        print(f"✅ Dataset already exists at: {DATA_DIR}")
+        return DATA_DIR
 
-        total_images += 1
-        main_categories[main_cat] = main_categories.get(main_cat, 0) + 1
-        if sub_cat:
-            sub_key = f"{main_cat} / {sub_cat}"
-            sub_categories[sub_key] = sub_categories.get(sub_key, 0) + 1
+    print("📥 Downloading dataset from Kaggle...")
+    print("⚠️  Dataset size ~900MB — please wait...")
 
-        try:
-            with Image.open(filepath) as img:
-                width, height = img.size
-                mode = img.mode
-                is_grayscale = (mode == 'L')
-                if is_grayscale:
-                    grayscale_count += 1
-                file_size_kb = os.path.getsize(filepath) / 1024
+    try:
+        kaggle.api.authenticate()
+        kaggle.api.dataset_download_files(
+            DATASET,
+            path=DATA_DIR,
+            unzip=True
+        )
+        print(f"✅ Download complete → {DATA_DIR}")
+    except Exception as e:
+        print(f"❌ Download failed: {e}")
+        print("💡 Please check your internet connection and API credentials")
+        sys.exit(1)
 
-                image_info.append({
-                    'main_category': main_cat,
-                    'sub_category': sub_cat,
-                    'width': width,
-                    'height': height,
-                    'aspect_ratio': round(width / height, 3),
-                    'file_size_kb': round(file_size_kb, 2),
-                    'mode': mode
-                })
-        except Exception:
-            corrupted_files.append(filepath)
-            continue
+    return DATA_DIR
 
-df = pd.DataFrame(image_info)
+# ==========================================================
+# 5. เริ่มทำงาน
+# ==========================================================
+if __name__ == "__main__":
+    print("=" * 60)
+    print("        KAGGLE DATASET DOWNLOADER")
+    print("=" * 60)
+    print()
 
-# ========== ส่วนที่เหลือของโค้ด EDA ต่อจากตรงนี้เหมือนเดิม ==========
+    setup_kaggle()
+    download_dataset()
+
+    print()
+    print("✅ data_collection.py finished — Dataset is ready!")
