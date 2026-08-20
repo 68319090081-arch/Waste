@@ -1,62 +1,102 @@
+✅ Sure! Here is everything in English 🎉
+📋 File Execution Order
+plaintext
+📂 src
+ ├ 📜 data_collection.py    # ① Download dataset from Kaggle
+ ├ 📜 eda.py                 # ② Analyze data + Generate charts
+ ├ 📜 preprocessing.py       # ③ Prepare & clean data
+ ├ 📜 image_processing.py    # ④ Process images
+ └ 📜 data_split.py          # ⑤ Split into train/test sets
+🚀 Option 1 — Run manually in order
+bash
+# ① Download dataset first
+python src/data_collection.py
+
+# ② Analyze & visualize
+python src/eda.py
+
+# ③ Preprocess data
+python src/preprocessing.py
+
+# ④ Process images
+python src/image_processing.py
+
+# ⑤ Split dataset
+python src/data_split.py
+🚀 Option 2 — Full Auto start.bat (Recommended)
+batch
 @echo off
 chcp 65001 >nul 2>&1
-title โปรแกรมวิเคราะห์ข้อมูลขยะ
+title Waste Classification Pipeline
 echo ========================================
-echo    🚀 เริ่มทำงานอัตโนมัติ
+echo    WASTE CLASSIFICATION PIPELINE
 echo ========================================
 echo.
 
 cd /d "%~dp0"
 
-echo [1/4] กำลังติดตั้งแพ็กเกจที่จำเป็น...
-pip install matplotlib pandas numpy pillow kaggle --quiet
-echo ✅ ติดตั้งเสร็จเรียบร้อย
+echo [1/6] Installing required packages...
+pip install matplotlib pandas numpy pillow kaggle opencv-python --quiet
+echo Done.
 echo.
 
-echo [2/4] ตรวจสอบไฟล์ Kaggle...
+echo [2/6] Checking Kaggle configuration...
 set "KAGGLE_FILE=%USERPROFILE%\.kaggle\kaggle.json"
 
 if exist "%KAGGLE_FILE%" (
-    echo ✅ พบไฟล์ kaggle.json พร้อมใช้งาน
+    echo Kaggle API configured OK.
 ) else (
     echo ============================================================
-    echo ❌ ไม่พบไฟล์ kaggle.json
+    echo  KAGGLE API KEY NOT FOUND
     echo.
-    echo 📥 วิธีดำเนินการ:
-    echo    1. เข้าเว็บ Kaggle.com --^> เข้าสู่ระบบ
-    echo    2. คลิกรูปโปรไฟล์ --^> Settings --^> เลื่อนลงหา API
-    echo    3. กดปุ่ม "Create New API Token"
-    echo    4. ไฟล์ kaggle.json จะถูกดาวน์โหลดมา
-    echo    5. นำไฟล์ kaggle.json มาวางไว้ที่ โฟลเดอร์นี้:
-    echo       %cd%
+    echo  How to get your key:
+    echo   1. Go to Kaggle.com and sign in
+    echo   2. Click your profile --^> Settings --^> API
+    echo   3. Click "Create New API Token"
+    echo   4. The file kaggle.json will download automatically
+    echo   5. Copy kaggle.json to THIS folder:
+    echo      %cd%
     echo.
-    echo 💡 เมื่อนำไฟล์มาวางเสร็จแล้ว กดปุ่มอะไรก็ได้เพื่อดำเนินการต่อ
+    echo  Place the file here, then press any key to continue...
     echo ============================================================
     pause
 
     if exist "%cd%\kaggle.json" (
-        echo ✅ พบไฟล์ kaggle.json กำลังนำไปวางที่ถูกที่...
+        echo Setting up Kaggle...
         if not exist "%USERPROFILE%\.kaggle" mkdir "%USERPROFILE%\.kaggle"
         copy "%cd%\kaggle.json" "%USERPROFILE%\.kaggle\kaggle.json" >nul
-        echo ✅ นำไฟล์ไปวางเรียบร้อยแล้ว
+        echo Configuration complete.
     ) else (
-        echo ❌ ยังไม่พบไฟล์ในโฟลเดอร์นี้ โปรดลองใหม่อีกครั้ง
+        echo File not found. Please try again.
         pause
         exit /b
     )
 )
 echo.
 
-echo [3/4] กำลังตรวจสอบและดาวน์โหลดข้อมูล...
+echo [3/6] Step 1/5 - Downloading dataset...
 python src\data_collection.py
-echo ✅ ข้อมูลพร้อมใช้งาน
+echo Dataset ready.
 echo.
 
-echo [4/4] กำลังวิเคราะห์ข้อมูล...
-echo ========================================
+echo [4/6] Step 2/5 - Exploratory Data Analysis...
 python src\eda.py
-echo ========================================
+echo Analysis complete.
 echo.
-echo ✅ ทุกขั้นตอนเสร็จสิ้นเรียบร้อยแล้ว!
+
+echo [5/6] Step 3/5 - Preprocessing data...
+python src\preprocessing.py
+echo Preprocessing complete.
+echo.
+
+echo [6/6] Step 4-5/5 - Processing images & Splitting dataset...
+python src\image_processing.py
+python src\data_split.py
+echo Processing complete.
+echo.
+
+echo ========================================
+echo ✅ ALL TASKS COMPLETED SUCCESSFULLY!
+echo ========================================
 echo.
 pause
