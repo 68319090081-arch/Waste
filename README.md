@@ -1,68 +1,45 @@
-Waste Classification
+# Waste Dataset Split Report
 
-1.ชื่อโปรเจกต์
-โปรเจกต์ Waste Classification เป็นระบบสำหรับการจำแนกประเภทขยะ
-โดยใช้ Waste Classification Dataset จาก Kaggle
+## Split Strategy
 
-2.ที่มาของ Dataset
-Dataset ที่ใช้: Waste Classification Dataset จาก PhenomSG
+- Train: 70%
+- Validation: 15%
+- Test: 15%
+- Random Seed: 42
 
-Kaggle:
-https://www.kaggle.com/datasets/phenomsg/waste-classification
+ใช้ Stratified Split โดยแบ่งแยกภายในแต่ละ Class เพื่อรักษาสัดส่วนของ Class ในแต่ละชุดข้อมูล
 
-Dataset ประกอบด้วยประเภทขยะหลัก ได้แก่
-- Hazardous
-- Non-Recyclable
-- Organic
-- Recyclable
+## Dataset Summary
 
-การตั้งค่า Kaggle API
-ผู้ใช้งานแต่ละคนต้องใช้ Kaggle Account ของตนเอง
-เพื่อยืนยันตัวตนก่อนดาวน์โหลด Dataset
+| Class | Total | Train | Val | Test |
+|---|---:|---:|---:|---:|
+| batteries | 1070 | 749 | 160 | 161 |
+| cans_all_type | 2690 | 1883 | 404 | 403 |
+| ceramic_product | 1360 | 952 | 204 | 204 |
+| coffee_tea_bags | 1470 | 1029 | 220 | 221 |
+| diapers | 1440 | 1008 | 216 | 216 |
+| e-waste | 2660 | 1862 | 399 | 399 |
+| egg_shells | 1230 | 861 | 184 | 185 |
+| food_scraps | 1470 | 1029 | 220 | 221 |
+| glass_containers | 1350 | 945 | 202 | 203 |
+| kitchen_waste | 1140 | 798 | 171 | 171 |
+| paints | 1500 | 1050 | 225 | 225 |
+| paper_products | 1180 | 826 | 177 | 177 |
+| pesticides | 1350 | 945 | 202 | 203 |
+| plastic_bottles | 1260 | 882 | 189 | 189 |
+| platics_bags_wrappers | 1330 | 931 | 200 | 199 |
+| sanitary_napkin | 1100 | 770 | 165 | 165 |
+| stroform_product | 1170 | 819 | 176 | 175 |
+| yard_trimmings | 1270 | 889 | 190 | 191 |
 
-รันคำสั่ง
-kaggle auth login 
-จากนั้นทำตามขั้นตอนที่แสดงบนหน้าจอ
+## Manifest
 
-วิธีติดตั้งและวิธีรัน Code
-ติดตั้งโปรเจกต์
-git clone https://github.com/68319090081-arch/Waste.git
-cd Waste
+- train_manifest.csv
+- val_manifest.csv
+- test_manifest.csv
 
-ติดตั้ง Library
-pip install -r requirements.txt
+## Graphs
 
-ดาวน์โหลด Dataset
-python src/data_collection.py
-
-Dataset จะถูกดาวน์โหลดอัตโนมัติไปยังโฟลเดอร์ data/
-
-โครงสร้าง Repository
-Waste/
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── src/
-│   └── data_collection.py
-├── data/
-├── notebooks/
-├── reports/
-└── slides/
-หมายเหตุ: โฟลเดอร์ data/ จะไม่ถูก Commit ขึ้น GitHub เนื่องจากกำหนดไว้ใน .gitignore
-
-5. สมาชิกและหน้าที่รับผิดชอบ
-คนที่ 1: นายอนุชิต เอี่ยมโมฬี
-หน้าที่: Data Collection
-Branch: feature/data-collection
-
-คนที่ 2: นายอนวัฒน์ เทพนาคิน
-หน้าที่: EDA
-Branch: feature/eda
-
-คนที่ 3: นายสุวิทย์ ชมวิจิตร
-หน้าที่: Preprocessing
-Branch: feature/preprocessing
-
-คนที่ 4: นายณัฐพล ผลเจริญ
-หน้าที่: Data Split
-Branch: feature/data-split
+- dataset_class_distribution.png
+- dataset_split_distribution.png
+- dataset_split_pie.png
