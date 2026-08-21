@@ -38,19 +38,38 @@ python src/data_collection.py
 Dataset จะถูกดาวน์โหลดอัตโนมัติไปยังโฟลเดอร์ data/
 
 โครงสร้าง Repository
-Waste/
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── src/
-│   └── data_collection.py
-├── data/
-├── notebooks/
-├── reports/
-└── slides/
+
+📁 Root
+- `README.md` — รายละเอียดโครงการ
+- `requirements.txt` — รายการ Library ที่ต้องใช้
+- `.gitignore` — ไฟล์ที่ไม่ต้องการให้ Git ติดตาม
+
+📁 src/
+ไฟล์ Python สำหรับประมวลผลข้อมูล
+- data_collection.py
+- eda.py`
+- preprocessing.py
+- image_processing.py
+- data_split.py
+
+📁 data/
+เก็บ Dataset ที่ดาวน์โหลดจาก Kaggle
+
+📁 reports/
+เอกสารรายงานผลการดำเนินงาน
+- eda_summary.md
+- data_collection.md
+- data_split.md
+- pre-imageprocessing.md
+
+📁 slides/
+Waste Classification Dataset.pdf
+
 หมายเหตุ: โฟลเดอร์ data/ จะไม่ถูก Commit ขึ้น GitHub เนื่องจากกำหนดไว้ใน .gitignore
 
-5. สมาชิกและหน้าที่รับผิดชอบ
+
+5.สมาชิกและหน้าที่รับผิดชอบ
+
 คนที่ 1: นายอนุชิต เอี่ยมโมฬี
 หน้าที่: Data Collection
 Branch: feature/data-collection
