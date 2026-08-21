@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # ================= CONFIG =================
 ROOT = Path(__file__).resolve().parent.parent
-DATASET = ROOT / "data"
+DATASET = ROOT / "data_processed"
 OUTPUT = ROOT / "dataset_split"
 
 TRAIN, VAL, TEST = 70, 15, 15
