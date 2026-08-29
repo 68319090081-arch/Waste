@@ -1,6 +1,10 @@
 # Dataset
 data/
 dataset/
+dataset_classification/
+
+# Training results
+runs/
 
 # Image files
 *.jpg
